@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Shelter Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Welcome, {{ current_user.username }}</h1>
+            <nav>
+                <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+                <a href="{{ url_for('update_profile') }}" class="btn btn-update">Update Profile</a>
+                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <section class="dashboard-section">
+            <h2>Food Stock</h2>
+            <ul class="item-list">
+                {% for item in food_stock %}
+                <li>
+                    <span>{{ item.item_name }}: {{ item.quantity }}</span>
+                    <form action="{{ url_for('delete_food_stock', item_id=item.id) }}" method="POST" class="inline-form">
+                        <button type="submit" class="btn btn-delete">Delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            <form action="{{ url_for('add_food_stock') }}" method="post" class="add-form">
+                <h3>Add Food Stock</h3>
+                <input type="text" name="item_name" placeholder="Item Name" required>
+                <input type="number" name="quantity" placeholder="Quantity" required>
+                <button type="submit" class="btn btn-add">Add Item</button>
+            </form>
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Shelter Locations</h2>
+            <ul class="item-list">
+                {% for location in shelter_locations %}
+                <li>
+                    <span>{{ location.address }} - {{ location.date.strftime('%Y-%m-%d') }}</span>
+                    <form action="{{ url_for('delete_shelter_location', location_id=location.id) }}" method="POST" class="inline-form">
+                        <button type="submit" class="btn btn-delete">Delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            <form action="{{ url_for('add_shelter_location') }}" method="post" class="add-form">
+                <h3>Add Shelter Location</h3>
+                <input type="text" name="address" placeholder="Address" required>
+                <input type="date" name="date" required>
+                <button type="submit" class="btn btn-add">Add Location</button>
+            </form>
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Notes</h2>
+            <ul class="item-list">
+                {% for note in notes %}
+                <li>
+                    <span>{{ note.content }} ({{ note.created_at.strftime('%Y-%m-%d %H:%M') }})</span>
+                    <form action="{{ url_for('delete_note', note_id=note.id) }}" method="POST" class="inline-form">
+                        <button type="submit" class="btn btn-delete">Delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            <form action="{{ url_for('add_note') }}" method="POST" class="add-form">
+                <h3>Add Note</h3>
+                <textarea name="content" required placeholder="Enter your note here"></textarea>
+                <button type="submit" class="btn btn-add">Add Note</button>
+            </form>
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Volunteers</h2>
+            <ul class="item-list">
+                {% for volunteer in volunteers %}
+                <li>
+                    <span>{{ volunteer.name }} - {{ volunteer.email }}</span>
+                    <form action="{{ url_for('delete_volunteer', volunteer_id=volunteer.id) }}" method="POST" class="inline-form">
+                        <button type="submit" class="btn btn-delete">Delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            <form action="{{ url_for('add_volunteer') }}" method="post" class="add-form">
+                <h3>Add Volunteer</h3>
+                <input type="text" name="name" placeholder="Name" required>
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="text" name="availability" placeholder="Availability">
+                <input type="text" name="skills" placeholder="Skills">
+                <textarea name="notes" placeholder="Notes"></textarea>
+                <button type="submit" class="btn btn-add">Add Volunteer</button>
+            </form>
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Budget</h2>
+            <ul class="item-list">
+                {% for entry in budget_entries %}
+                <li>
+                    <span>{{ entry.amount }} - {{ entry.description }} ({{ entry.date.strftime('%Y-%m-%d') }})</span>
+                    <form action="{{ url_for('delete_budget', budget_id=entry.id) }}" method="POST" class="inline-form">
+                        <button type="submit" class="btn btn-delete">Delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            <form action="{{ url_for('add_budget') }}" method="post" class="add-form">
+                <h3>Add Budget Entry</h3>
+                <input type="number" step="0.01" name="amount" placeholder="Amount" required>
+                <input type="text" name="description" placeholder="Description" required>
+                <input type="date" name="date" required>
+                <button type="submit" class="btn btn-add">Add Entry</button>
+            </form>
+        </section>
+
+        <section class="dashboard-section">
+            <h2>Donations</h2>
+            <ul class="item-list">
+                {% for donation in donations %}
+                <li>
+                    <span>{{ donation.amount }} - {{ donation.donor_name }} ({{ donation.date.strftime('%Y-%m-%d') }})</span>
+                    <form action="{{ url_for('delete_donation', donation_id=donation.id) }}" method="POST" class="inline-form">
+                        <button type="submit" class="btn btn-delete">Delete</button>
+                    </form>
+                </li>
+                {% endfor %}
+            </ul>
+            <form action="{{ url_for('add_donation') }}" method="post" class="add-form">
+                <h3>Add Donation</h3>
+                <input type="number" step="0.01" name="amount" placeholder="Amount" required>
+                <input type="text" name="donor_name" placeholder="Donor Name">
+                <input type="date" name="date" required>
+                <button type="submit" class="btn btn-add">Add Donation</button>
+            </form>
+        </section>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Food Shelter App. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

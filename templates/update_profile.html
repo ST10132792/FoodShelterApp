@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile - Food Shelter App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Food Shelter App</h1>
+            <nav>
+                <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+            </nav>
+        </div>
+    </header>
+    <main class="container">
+        <section class="update-profile-section">
+            <h2>Update Profile</h2>
+            <form method="POST" class="update-form">
+                <div class="form-group">
+                    <label for="name">Name:</label>
+                    <input type="text" id="name" name="name" value="{{ current_user.name or '' }}">
+                </div>
+                <div class="form-group">
+                    <label for="bio">Bio:</label>
+                    <textarea id="bio" name="bio">{{ current_user.bio or '' }}</textarea>
+                </div>
+                <div class="form-group">
+                    <label for="website">Website:</label>
+                    <input type="text" id="website" name="website" value="{{ current_user.website or '' }}">
+                </div>
+                <div class="form-group">
+                    <label for="contact">Contact:</label>
+                    <input type="text" id="contact" name="contact" value="{{ current_user.contact or '' }}">
+                </div>
+                <div class="form-group">
+                    <label for="donation_link">Donation Link:</label>
+                    <input type="text" id="donation_link" name="donation_link" value="{{ current_user.donation_link or '' }}">
+                </div>
+                <button type="submit" class="btn btn-update">Update Profile</button>
+            </form>
+        </section>
+    </main>
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Food Shelter App. All rights reserved.</p>
+        </div>
+    </footer>
+</body>
+</html>

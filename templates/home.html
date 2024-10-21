@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Food Shelter App - Home</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+    <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js"></script>
+    <style>
+        #map { height: 400px; width: 100%; margin-bottom: 20px; border-radius: 8px; }
+    </style>
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Food Shelter App</h1>
+            <nav>
+                <a href="{{ url_for('home') }}" class="nav-link">Home</a>
+                {% if current_user.is_authenticated %}
+                    <a href="{{ url_for('dashboard') }}" class="nav-link">Dashboard</a>
+                    <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
+                {% else %}
+                    <a href="{{ url_for('login') }}" class="btn btn-login">Login</a>
+                    <a href="{{ url_for('register') }}" class="btn btn-register">Register</a>
+                {% endif %}
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="hero">
+            <div class="container">
+                <h2>Welcome to Food Shelter App</h2>
+                <p>Empowering communities to manage food resources and shelter locations efficiently.</p>
+            </div>
+        </section>
+
+        <div class="container">
+            <section class="map-section">
+                <h2>Food Shelter Locations</h2>
+                <div id="map"></div>
+            </section>
+
+            <section class="shelters-section">
+                <h2>Food Shelters Information</h2>
+                {% for shelter in shelter_info %}
+                <div class="shelter-card">
+                    <h3>{{ shelter.name or 'Unnamed Shelter' }}</h3>
+                    {% if shelter.bio %}
+                        <p><strong>Bio:</strong> {{ shelter.bio }}</p>
+                    {% endif %}
+                    {% if shelter.website %}
+                        <p><strong>Website:</strong> <a href="{{ shelter.website }}" target="_blank" rel="noopener noreferrer">{{ shelter.website }}</a></p>
+                    {% endif %}
+                    {% if shelter.contact %}
+                        <p><strong>Contact:</strong> {{ shelter.contact }}</p>
+                    {% endif %}
+                    {% if shelter.donation_link %}
+                        <p><a href="{{ shelter.donation_link }}" class="btn btn-donate" target="_blank" rel="noopener noreferrer">Make a Donation</a></p>
+                    {% endif %}
+                    <h4>Locations:</h4>
+                    <ul class="location-list">
+                        {% for location in shelter.locations %}
+                            <li>{{ location.address }}</li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% endfor %}
+            </section>
+
+            <section class="features">
+                <div class="feature">
+                    <img src="{{ url_for('static', filename='images/food-icon.png') }}" alt="Food Stock">
+                    <h3>Food Stock Management</h3>
+                    <p>Keep track of food inventory and manage donations effectively.</p>
+                </div>
+                <div class="feature">
+                    <img src="{{ url_for('static', filename='images/shelter-icon.png') }}" alt="Shelter Locations">
+                    <h3>Shelter Locations</h3>
+                    <p>Manage and share information about available shelter locations.</p>
+                </div>
+                <div class="feature">
+                    <img src="{{ url_for('static', filename='images/volunteer-icon.png') }}" alt="Volunteer Management">
+                    <h3>Volunteer Management</h3>
+                    <p>Coordinate volunteers and their activities efficiently.</p>
+                </div>
+            </section>
+
+            <section class="cta">
+                <h2>Ready to make a difference?</h2>
+                <p>If you are a Registered Food shelter or a small collective working to help those in need then join our community and start managing your food shelter resources today.</p>
+                <a href="{{ url_for('register') }}" class="btn btn-cta">Sign Up Now</a>
+            </section>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Food Shelter App. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        var map = L.map('map').setView([0, 0], 2);
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+
+        var shelters = JSON.parse('{{ shelter_info|tojson|safe }}');
+        shelters.forEach(function(shelter) {
+            shelter.locations.forEach(function(loc) {
+                L.marker([loc.latitude, loc.longitude])
+                    .addTo(map)
+                    .bindPopup(shelter.name + '<br>' + loc.address);
+            });
+        });
+
+        if (shelters.length > 0 && shelters[0].locations.length > 0) {
+            var bounds = L.latLngBounds(shelters.flatMap(shelter =>
+                shelter.locations.map(loc => [loc.latitude, loc.longitude])
+            ));
+            map.fitBounds(bounds);
+        }
+    </script>
+</body>
+</html>
