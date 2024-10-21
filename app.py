@@ -1,9 +1,10 @@
-from flask import Flask, render_template, request, redirect, url_for, flash
+from flask import Flask, render_template, request, redirect, url_for, flash, jsonify
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, UserMixin, login_user, login_required, logout_user, current_user
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime  # Add this import at the top of your file
 from flask import abort
+from datetime import timedelta
 
 #from time import sleep
 #from functools import lru_cache
@@ -11,6 +12,8 @@ import logging
 
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut, GeocoderUnavailable
+from itsdangerous import URLSafeTimedSerializer
+from flask_mail import Mail, Message
 
 logging.basicConfig(filename='app.log', 
                     level=logging.DEBUG, 
@@ -23,10 +26,19 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'benfeb2003@gmail.com'
+app.config['MAIL_PASSWORD'] = 'yxao dexs ioeb chso'
+mail = Mail(app)
+
+s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    username = db.Column(db.String(80), unique=True, nullable=False)
-    password_hash = db.Column(db.String(120), nullable=False)
+    email = db.Column(db.String(120), unique=True, nullable=False)
+    password_hash = db.Column(db.String(128))
     name = db.Column(db.String(100), nullable=True)
     bio = db.Column(db.Text, nullable=True)
     website = db.Column(db.String(200), nullable=True)
@@ -43,6 +55,10 @@ class FoodStock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     item_name = db.Column(db.String(100), nullable=False)
     quantity = db.Column(db.Integer, nullable=False)
+    category = db.Column(db.String(50), nullable=False)
+    expiration_date = db.Column(db.Date, nullable=True)
+    minimum_stock = db.Column(db.Integer, default=0)
+    unit = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
 class ShelterLocation(db.Model):
@@ -87,7 +103,7 @@ class Donation(db.Model):
 
 @login_manager.user_loader
 def load_user(user_id):
-    return User.query.get(int(user_id))
+    return db.session.get(User, int(user_id))
 
 @app.route('/')
 def home():
@@ -108,14 +124,26 @@ def home():
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
+    logging.debug("Login route accessed")
     if request.method == 'POST':
-        username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password')
-        user = User.query.filter_by(username=username).first()
-        if user and check_password_hash(user.password_hash, password):
-            login_user(user)
-            return redirect(url_for('dashboard'))
-        flash('Invalid username or password')
+        logging.debug(f"Login attempt with email: {email}")
+        
+        user = User.query.filter_by(email=email).first()
+        if user:
+            logging.debug(f"User found: {user.email}")
+            if check_password_hash(user.password_hash, password):
+                logging.debug("Password check successful")
+                login_user(user)
+                logging.debug("User logged in successfully")
+                return redirect(url_for('dashboard'))
+            else:
+                logging.debug("Password check failed")
+        else:
+            logging.debug("User not found")
+        
+        flash('Invalid email or password')
     return render_template('login.html')
 
 @app.route('/logout')
@@ -142,14 +170,33 @@ def update_profile():
 @app.route('/dashboard')
 @login_required
 def dashboard():
-    food_stock = FoodStock.query.filter_by(user_id=current_user.id).all()
+    food_stock = FoodStock.query.filter_by(user_id=current_user.id).order_by(FoodStock.category, FoodStock.item_name).all()
     shelter_locations = ShelterLocation.query.filter_by(user_id=current_user.id).all()
     notes = Note.query.filter_by(user_id=current_user.id).all()
     budget_entries = Budget.query.filter_by(user_id=current_user.id).all()
     volunteers = Volunteer.query.filter_by(user_id=current_user.id).all()
     donations = Donation.query.filter_by(user_id=current_user.id).all()
-    return render_template('dashboard.html', food_stock=food_stock, shelter_locations=shelter_locations, 
-                           notes=notes, budget_entries=budget_entries, volunteers=volunteers, donations=donations)
+    
+    low_stock_count = FoodStock.query.filter(
+        FoodStock.user_id == current_user.id,
+        FoodStock.quantity <= FoodStock.minimum_stock
+    ).count()
+    
+    expiring_soon_count = FoodStock.query.filter(
+        FoodStock.user_id == current_user.id,
+        FoodStock.expiration_date.isnot(None),
+        FoodStock.expiration_date <= datetime.now().date() + timedelta(days=7)
+    ).count()
+    
+    return render_template('dashboard.html', 
+                           food_stock=food_stock, 
+                           shelter_locations=shelter_locations, 
+                           notes=notes, 
+                           budget_entries=budget_entries, 
+                           volunteers=volunteers, 
+                           donations=donations,
+                           low_stock_count=low_stock_count,
+                           expiring_soon_count=expiring_soon_count)
 
 
 
@@ -160,10 +207,66 @@ def dashboard():
 def add_food_stock():
     item_name = request.form.get('item_name')
     quantity = request.form.get('quantity')
-    new_item = FoodStock(item_name=item_name, quantity=quantity, user_id=current_user.id)
-    db.session.add(new_item)
-    db.session.commit()
+    category = request.form.get('category')
+    expiration_date_str = request.form.get('expiration_date')
+    minimum_stock = request.form.get('minimum_stock')
+    unit = request.form.get('unit')
+
+    try:
+        expiration_date = datetime.strptime(expiration_date_str, '%Y-%m-%d').date() if expiration_date_str else None
+        new_item = FoodStock(
+            item_name=item_name,
+            quantity=int(quantity),
+            category=category,
+            expiration_date=expiration_date,
+            minimum_stock=int(minimum_stock),
+            unit=unit,
+            user_id=current_user.id
+        )
+        db.session.add(new_item)
+        db.session.commit()
+        flash('New food stock item added successfully!')
+    except ValueError:
+        flash('Invalid input. Please check your entries.')
     return redirect(url_for('dashboard'))
+
+@app.route('/update_food_stock/<int:item_id>', methods=['POST'])
+@login_required
+def update_food_stock(item_id):
+    item = FoodStock.query.get_or_404(item_id)
+    if item.user_id != current_user.id:
+        abort(403)
+    
+    data = request.json
+    item.item_name = data.get('item_name', item.item_name)
+    item.category = data.get('category', item.category)
+    item.quantity = int(data.get('quantity', item.quantity))
+    item.unit = data.get('unit', item.unit)
+    item.expiration_date = datetime.strptime(data.get('expiration_date'), '%Y-%m-%d').date() if data.get('expiration_date') and data.get('expiration_date') != 'N/A' else None
+    item.minimum_stock = int(data.get('minimum_stock', item.minimum_stock))
+
+    db.session.commit()
+    return jsonify({'success': True})
+
+@app.route('/low_stock')
+@login_required
+def low_stock():
+    low_stock_items = FoodStock.query.filter(
+        FoodStock.user_id == current_user.id,
+        FoodStock.quantity <= FoodStock.minimum_stock
+    ).all()
+    return render_template('low_stock.html', low_stock_items=low_stock_items)
+
+@app.route('/expiring_soon')
+@login_required
+def expiring_soon():
+    today = datetime.now().date()
+    expiring_items = FoodStock.query.filter(
+        FoodStock.user_id == current_user.id,
+        FoodStock.expiration_date.isnot(None),
+        FoodStock.expiration_date <= today + timedelta(days=7)
+    ).order_by(FoodStock.expiration_date).all()
+    return render_template('expiring_soon.html', expiring_items=expiring_items)
 
 @app.route('/add_shelter_location', methods=['POST'])
 @login_required
@@ -307,15 +410,19 @@ def delete_budget(budget_id):
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form.get('username')
+        email = request.form.get('email')
         password = request.form.get('password')
         
-        user = User.query.filter_by(username=username).first()
-        if user:
-            flash('Username already exists')
+        if not email or not password:
+            flash('Email and password are required.')
             return redirect(url_for('register'))
         
-        new_user = User(username=username, password_hash=generate_password_hash(password))
+        user = User.query.filter_by(email=email).first()
+        if user:
+            flash('Email already registered.')
+            return redirect(url_for('register'))
+        
+        new_user = User(email=email, password_hash=generate_password_hash(password))
         db.session.add(new_user)
         db.session.commit()
         
@@ -334,6 +441,42 @@ def add_donation():
     db.session.commit()
     flash('New donation added successfully!')
     return redirect(url_for('dashboard'))
+
+@app.route('/forgot_password', methods=['GET', 'POST'])
+def forgot_password():
+    if request.method == 'POST':
+        email = request.form.get('email')
+        user = User.query.filter_by(email=email).first()
+        if user:
+            token = s.dumps(email, salt='password-reset-salt')
+            reset_url = url_for('reset_password', token=token, _external=True)
+            msg = Message('Password Reset Request',
+                          sender='noreply@yourdomain.com',
+                          recipients=[email])
+            msg.body = f'To reset your password, visit the following link: {reset_url}'
+            mail.send(msg)
+            flash('An email has been sent with instructions to reset your password.')
+        else:
+            flash('Email not found.')
+    return render_template('forgot_password.html')
+
+@app.route('/reset_password/<token>', methods=['GET', 'POST'])
+def reset_password(token):
+    try:
+        email = s.loads(token, salt='password-reset-salt', max_age=3600)
+    except:
+        flash('The password reset link is invalid or has expired.')
+        return redirect(url_for('login'))
+    
+    if request.method == 'POST':
+        user = User.query.filter_by(email=email).first()
+        new_password = request.form.get('password')
+        user.password_hash = generate_password_hash(new_password)
+        db.session.commit()
+        flash('Your password has been updated.')
+        return redirect(url_for('login'))
+    
+    return render_template('reset_password.html')
 
 if __name__ == '__main__':
     with app.app_context():
