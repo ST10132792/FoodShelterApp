@@ -968,3 +968,45 @@ nominatim@openstreetmap.org to have this block lifted.</p>
 2024-10-21 22:37:05,537 - INFO - 127.0.0.1 - - [21/Oct/2024 22:37:05] "GET /dashboard HTTP/1.1" 200 -
 2024-10-21 22:37:05,565 - INFO - 127.0.0.1 - - [21/Oct/2024 22:37:05] "[33mGET /static/js/inventory.js HTTP/1.1[0m" 404 -
 2024-10-21 22:37:05,566 - INFO - 127.0.0.1 - - [21/Oct/2024 22:37:05] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-21 22:45:23,712 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-10-21 22:45:23,712 - INFO - [33mPress CTRL+C to quit[0m
+2024-10-21 22:45:23,714 - INFO -  * Restarting with stat
+2024-10-21 22:45:25,103 - WARNING -  * Debugger is active!
+2024-10-21 22:45:25,109 - INFO -  * Debugger PIN: 951-135-049
+2024-10-21 22:45:31,551 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:31] "GET / HTTP/1.1" 200 -
+2024-10-21 22:45:31,581 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:31] "[33mGET /static/images/food-icon.png HTTP/1.1[0m" 404 -
+2024-10-21 22:45:31,582 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:31] "[33mGET /static/images/shelter-icon.png HTTP/1.1[0m" 404 -
+2024-10-21 22:45:31,654 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:31] "[33mGET /static/images/volunteer-icon.png HTTP/1.1[0m" 404 -
+2024-10-21 22:45:31,688 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:31] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-21 22:45:33,613 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:33] "GET /dashboard HTTP/1.1" 200 -
+2024-10-21 22:45:33,644 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:33] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-21 22:45:33,651 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:33] "GET /static/js/inventory.js HTTP/1.1" 200 -
+2024-10-21 22:45:38,263 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:38] "[32mPOST /add_food_stock HTTP/1.1[0m" 302 -
+2024-10-21 22:45:38,273 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:38] "GET /dashboard HTTP/1.1" 200 -
+2024-10-21 22:45:38,301 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:38] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-21 22:45:38,301 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:38] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-21 22:45:47,975 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:47] "POST /update_food_stock/1 HTTP/1.1" 200 -
+2024-10-21 22:45:47,990 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:47] "GET /dashboard HTTP/1.1" 200 -
+2024-10-21 22:45:48,013 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:48] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-21 22:45:48,016 - INFO - 127.0.0.1 - - [21/Oct/2024 22:45:48] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-21 22:46:22,650 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:22] "[32mPOST /add_food_stock HTTP/1.1[0m" 302 -
+2024-10-21 22:46:22,666 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:22] "GET /dashboard HTTP/1.1" 200 -
+2024-10-21 22:46:22,692 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:22] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-21 22:46:22,694 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:22] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-21 22:46:31,424 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:31] "POST /update_food_stock/1 HTTP/1.1" 200 -
+2024-10-21 22:46:31,441 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:31] "GET /dashboard HTTP/1.1" 200 -
+2024-10-21 22:46:31,463 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:31] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-21 22:46:31,468 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:31] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-21 22:46:32,916 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:32] "GET /expiring_soon HTTP/1.1" 200 -
+2024-10-21 22:46:32,939 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-21 22:46:36,255 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:36] "GET /dashboard HTTP/1.1" 200 -
+2024-10-21 22:46:36,279 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:36] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-21 22:46:36,286 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:36] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-21 22:46:52,468 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:52] "[32mPOST /add_donation HTTP/1.1[0m" 302 -
+2024-10-21 22:46:52,490 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:52] "[35m[1mGET /dashboard HTTP/1.1[0m" 500 -
+2024-10-21 22:46:52,520 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:52] "[36mGET /dashboard?__debugger__=yes&cmd=resource&f=style.css HTTP/1.1[0m" 304 -
+2024-10-21 22:46:52,521 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:52] "[36mGET /dashboard?__debugger__=yes&cmd=resource&f=debugger.js HTTP/1.1[0m" 304 -
+2024-10-21 22:46:52,575 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:52] "GET /dashboard?__debugger__=yes&cmd=resource&f=console.png&s=wpahsAUQyohH0HCKQzNm HTTP/1.1" 200 -
+2024-10-21 22:46:52,579 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:52] "[36mGET /dashboard?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2024-10-21 22:46:52,623 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:52] "[36mGET /dashboard?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -

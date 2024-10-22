@@ -1,11 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
     const table = document.querySelector('.inventory-table');
-    table.addEventListener('click', function(e) {
-        if (e.target.classList.contains('btn-edit')) {
-            const itemId = e.target.getAttribute('data-item-id');
-            editItem(itemId);
-        }
-    });
+    if (table) {
+        table.addEventListener('click', function(e) {
+            if (e.target.classList.contains('btn-edit')) {
+                const itemId = e.target.getAttribute('data-item-id');
+                editItem(itemId);
+            }
+        });
+    }
 });
 
 function editItem(itemId) {

@@ -478,6 +478,17 @@ def reset_password(token):
     
     return render_template('reset_password.html')
 
+@app.route('/delete_donation/<int:donation_id>', methods=['POST'])
+@login_required
+def delete_donation(donation_id):
+    donation = Donation.query.get_or_404(donation_id)
+    if donation.user_id != current_user.id:
+        abort(403)
+    db.session.delete(donation)
+    db.session.commit()
+    flash('Donation deleted successfully.')
+    return redirect(url_for('dashboard'))
+
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()
