@@ -6,29 +6,99 @@
     <title>Food Shelter Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
-    <script src="{{ url_for('static', filename='js/inventory.js') }}"></script>
-</head>
-<body>
-    <header class="header">
-        <div class="container">
-            <h1>Welcome, {{ current_user.username }}</h1>
-            <nav>
-                <a href="{{ url_for('home') }}" class="nav-link">Home</a>
-                <a href="{{ url_for('update_profile') }}" class="btn btn-update">Update Profile</a>
-                <a href="{{ url_for('logout') }}" class="btn btn-logout">Logout</a>
-            </nav>
-        </div>
-    </header>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <script src="{{ url_for('static', filename='js/inventory.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/modals.js') }}" defer></script>
+    <style>
+        .action-buttons {
+            display: flex;
+            gap: 8px;
+            justify-content: flex-end;
+        }
+        
+        .dashboard-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 14px;
+            gap: 6px;
+            min-width: 40px;
+        }
 
-    <main class="container">
-        <section class="dashboard-section food-stock">
-            <h2>Food Stock</h2>
-            <div class="inventory-summary">
-                <p><a href="{{ url_for('low_stock') }}">Low Stock Items: {{ low_stock_count }}</a></p>
-                <p><a href="{{ url_for('expiring_soon') }}">Items Expiring Soon: {{ expiring_soon_count }}</a></p>
+        .item-list li {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .item-list li span {
+            flex: 1;
+        }
+
+        .inline-form {
+            margin-left: 8px;
+        }
+
+        .dashboard-btn-edit, .dashboard-btn-delete {
+            padding: 6px 12px;
+        }
+
+        .dashboard-table td:last-child {
+            width: 150px;
+        }
+    </style>
+</head>
+<body class="dashboard-body">
+    <nav class="sidebar">
+        <div class="sidebar-header">
+            <h2>Food Shelter</h2>
+        </div>
+        <ul class="sidebar-menu">
+            <li><a href="{{ url_for('dashboard') }}"><i class="fas fa-home"></i> Dashboard</a></li>
+            <li><a href="#food-stock"><i class="fas fa-box"></i> Food Stock</a></li>
+            <li><a href="#shelter-locations"><i class="fas fa-map-marker-alt"></i> Shelter Locations</a></li>
+            <li><a href="#notes"><i class="fas fa-sticky-note"></i> Notes</a></li>
+            <li><a href="#volunteers"><i class="fas fa-users"></i> Volunteers</a></li>
+            <li><a href="#budget"><i class="fas fa-money-bill-wave"></i> Budget</a></li>
+            <li><a href="#donations"><i class="fas fa-hand-holding-heart"></i> Donations</a></li>
+        </ul>
+    </nav>
+
+    <main class="dashboard-content">
+        <header class="dashboard-top-bar">
+            <h1>Welcome, {{ current_user.username }}</h1>
+            <div class="user-actions">
+                <a href="{{ url_for('update_profile') }}" class="dashboard-btn dashboard-btn-edit">Update Profile</a>
+                <a href="{{ url_for('logout') }}" class="dashboard-btn dashboard-btn-delete">Logout</a>
             </div>
+        </header>
+
+        <div class="dashboard-summary">
+            <div class="summary-card">
+                <i class="fas fa-exclamation-triangle"></i>
+                <h3>Low Stock Items</h3>
+                <p>{{ low_stock_count }}</p>
+                <a href="{{ url_for('low_stock') }}" class="dashboard-btn dashboard-btn-add">View Details</a>
+            </div>
+            <div class="summary-card">
+                <i class="fas fa-clock"></i>
+                <h3>Expiring Soon</h3>
+                <p>{{ expiring_soon_count }}</p>
+                <a href="{{ url_for('expiring_soon') }}" class="dashboard-btn dashboard-btn-add">View Details</a>
+            </div>
+        </div>
+
+        <section id="food-stock" class="dashboard-section">
+            <h2>Food Stock</h2>
             <div class="table-container">
-                <table class="inventory-table">
+                <table class="dashboard-table">
                     <thead>
                         <tr>
                             <th>Item Name</th>
@@ -49,10 +119,14 @@
                             <td data-field="unit">{{ item.unit }}</td>
                             <td data-field="expiration_date" class="date-cell">{{ item.expiration_date.strftime('%Y-%m-%d') if item.expiration_date else 'N/A' }}</td>
                             <td data-field="minimum_stock">{{ item.minimum_stock }}</td>
-                            <td>
-                                <button class="btn btn-edit" data-item-id="{{ item.id }}">Edit</button>
+                            <td class="action-buttons">
+                                <button class="dashboard-btn dashboard-btn-edit" data-item-id="{{ item.id }}">
+                                    <i class="fas fa-edit"></i> Edit
+                                </button>
                                 <form action="{{ url_for('delete_food_stock', item_id=item.id) }}" method="POST" class="inline-form">
-                                    <button type="submit" class="btn btn-delete">Delete</button>
+                                    <button type="submit" class="dashboard-btn dashboard-btn-delete">
+                                        <i class="fas fa-trash"></i> Delete
+                                    </button>
                                 </form>
                             </td>
                         </tr>
@@ -60,133 +134,235 @@
                     </tbody>
                 </table>
             </div>
-            <button id="addFoodStockBtn" class="btn btn-add">Add Food Stock</button>
-            <div id="addFoodStockForm" class="modal">
-                <div class="modal-content">
-                    <span class="close">&times;</span>
-                    <h3>Add Food Stock</h3>
-                    <form action="{{ url_for('add_food_stock') }}" method="post">
-                        <input type="text" name="item_name" placeholder="Item Name" required>
-                        <input type="text" name="category" placeholder="Category" required>
-                        <input type="number" name="quantity" placeholder="Quantity" required>
-                        <input type="text" name="unit" placeholder="Unit" required>
-                        <input type="date" name="expiration_date" placeholder="Expiration Date">
-                        <input type="number" name="minimum_stock" placeholder="Minimum Stock" required>
-                        <button type="submit" class="btn btn-add">Add Item</button>
-                    </form>
-                </div>
-            </div>
+            <button id="addFoodStockBtn" class="dashboard-btn dashboard-btn-add">
+                <i class="fas fa-plus"></i> Add Food Stock
+            </button>
         </section>
 
-        <section class="dashboard-section">
+        <section id="shelter-locations" class="dashboard-section">
             <h2>Shelter Locations</h2>
             <ul class="item-list">
                 {% for location in shelter_locations %}
                 <li>
                     <span>{{ location.address }} - {{ location.date.strftime('%Y-%m-%d') }}</span>
                     <form action="{{ url_for('delete_shelter_location', location_id=location.id) }}" method="POST" class="inline-form">
-                        <button type="submit" class="btn btn-delete">Delete</button>
+                        <button type="submit" class="dashboard-btn dashboard-btn-delete">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
                     </form>
                 </li>
                 {% endfor %}
             </ul>
-            <form action="{{ url_for('add_shelter_location') }}" method="post" class="add-form">
-                <h3>Add Shelter Location</h3>
-                <input type="text" name="address" placeholder="Address" required>
-                <input type="date" name="date" required>
-                <button type="submit" class="btn btn-add">Add Location</button>
-            </form>
+            <button id="addShelterLocationBtn" class="dashboard-btn dashboard-btn-add">
+                <i class="fas fa-plus"></i> Add Shelter Location
+            </button>
         </section>
 
-        <section class="dashboard-section">
+        <section id="notes" class="dashboard-section">
             <h2>Notes</h2>
             <ul class="item-list">
                 {% for note in notes %}
                 <li>
-                    <span>{{ note.content }} ({{ note.created_at.strftime('%Y-%m-%d %H:%M') }})</span>
+                    <span>{{ note.content }} ({{ note.timestamp.strftime('%Y-%m-%d %H:%M') }})</span>
                     <form action="{{ url_for('delete_note', note_id=note.id) }}" method="POST" class="inline-form">
-                        <button type="submit" class="btn btn-delete">Delete</button>
+                        <button type="submit" class="dashboard-btn dashboard-btn-delete"><i class="fas fa-trash"></i></button>
                     </form>
                 </li>
                 {% endfor %}
             </ul>
-            <form action="{{ url_for('add_note') }}" method="POST" class="add-form">
-                <h3>Add Note</h3>
-                <textarea name="content" required placeholder="Enter your note here"></textarea>
-                <button type="submit" class="btn btn-add">Add Note</button>
-            </form>
+            <button id="addNoteBtn" class="dashboard-btn dashboard-btn-add"><i class="fas fa-plus"></i> Add Note</button>
         </section>
 
-        <section class="dashboard-section">
+        <section id="volunteers" class="dashboard-section">
             <h2>Volunteers</h2>
             <ul class="item-list">
                 {% for volunteer in volunteers %}
                 <li>
                     <span>{{ volunteer.name }} - {{ volunteer.email }}</span>
                     <form action="{{ url_for('delete_volunteer', volunteer_id=volunteer.id) }}" method="POST" class="inline-form">
-                        <button type="submit" class="btn btn-delete">Delete</button>
+                        <button type="submit" class="dashboard-btn dashboard-btn-delete"><i class="fas fa-trash"></i></button>
                     </form>
                 </li>
                 {% endfor %}
             </ul>
-            <form action="{{ url_for('add_volunteer') }}" method="post" class="add-form">
-                <h3>Add Volunteer</h3>
-                <input type="text" name="name" placeholder="Name" required>
-                <input type="email" name="email" placeholder="Email" required>
-                <input type="text" name="availability" placeholder="Availability">
-                <input type="text" name="skills" placeholder="Skills">
-                <textarea name="notes" placeholder="Notes"></textarea>
-                <button type="submit" class="btn btn-add">Add Volunteer</button>
-            </form>
+            <button id="addVolunteerBtn" class="dashboard-btn dashboard-btn-add"><i class="fas fa-plus"></i> Add Volunteer</button>
         </section>
 
-        <section class="dashboard-section">
+        <section id="budget" class="dashboard-section">
             <h2>Budget</h2>
             <ul class="item-list">
                 {% for entry in budget_entries %}
                 <li>
                     <span>{{ entry.amount }} - {{ entry.description }} ({{ entry.date.strftime('%Y-%m-%d') }})</span>
                     <form action="{{ url_for('delete_budget', budget_id=entry.id) }}" method="POST" class="inline-form">
-                        <button type="submit" class="btn btn-delete">Delete</button>
+                        <button type="submit" class="dashboard-btn dashboard-btn-delete"><i class="fas fa-trash"></i></button>
                     </form>
                 </li>
                 {% endfor %}
             </ul>
-            <form action="{{ url_for('add_budget') }}" method="post" class="add-form">
-                <h3>Add Budget Entry</h3>
-                <input type="number" step="0.01" name="amount" placeholder="Amount" required>
-                <input type="text" name="description" placeholder="Description" required>
-                <input type="date" name="date" required>
-                <button type="submit" class="btn btn-add">Add Entry</button>
-            </form>
+            <button id="addBudgetEntryBtn" class="dashboard-btn dashboard-btn-add"><i class="fas fa-plus"></i> Add Budget Entry</button>
         </section>
 
-        <section class="dashboard-section">
+        <section id="donations" class="dashboard-section">
             <h2>Donations</h2>
             <ul class="item-list">
                 {% for donation in donations %}
                 <li>
                     <span>{{ donation.amount }} - {{ donation.donor_name }} ({{ donation.date.strftime('%Y-%m-%d') }})</span>
                     <form action="{{ url_for('delete_donation', donation_id=donation.id) }}" method="POST" class="inline-form">
-                        <button type="submit" class="btn btn-delete">Delete</button>
+                        <button type="submit" class="dashboard-btn dashboard-btn-delete"><i class="fas fa-trash"></i></button>
                     </form>
                 </li>
                 {% endfor %}
             </ul>
-            <form action="{{ url_for('add_donation') }}" method="post" class="add-form">
-                <h3>Add Donation</h3>
-                <input type="number" step="0.01" name="amount" placeholder="Amount" required>
-                <input type="text" name="donor_name" placeholder="Donor Name">
-                <input type="date" name="date" required>
-                <button type="submit" class="btn btn-add">Add Donation</button>
-            </form>
+            <button id="addDonationBtn" class="dashboard-btn dashboard-btn-add"><i class="fas fa-plus"></i> Add Donation</button>
         </section>
-    </main>
 
-    <footer>
-        <div class="container">
-            <p>&copy; 2023 Food Shelter App. All rights reserved.</p>
+        <!-- Food Stock Modal -->
+        <div id="foodStockModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add Food Stock Item</h2>
+                <form action="{{ url_for('add_food_stock') }}" method="POST">
+                    <div class="form-group">
+                        <label for="item_name">Item Name:</label>
+                        <input type="text" id="item_name" name="item_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="category">Category:</label>
+                        <input type="text" id="category" name="category" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="quantity">Quantity:</label>
+                        <input type="number" id="quantity" name="quantity" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="unit">Unit:</label>
+                        <input type="text" id="unit" name="unit" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="expiration_date">Expiration Date:</label>
+                        <input type="date" id="expiration_date" name="expiration_date">
+                    </div>
+                    <div class="form-group">
+                        <label for="minimum_stock">Minimum Stock:</label>
+                        <input type="number" id="minimum_stock" name="minimum_stock" required>
+                    </div>
+                    <button type="submit" class="dashboard-btn dashboard-btn-add">Add Item</button>
+                </form>
+            </div>
         </div>
-    </footer>
+
+        <!-- Shelter Location Modal -->
+        <div id="shelterLocationModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add Shelter Location</h2>
+                <form action="{{ url_for('add_shelter_location') }}" method="POST">
+                    <div class="form-group">
+                        <label for="address">Address:</label>
+                        <input type="text" id="address" name="address" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <button type="submit" class="dashboard-btn dashboard-btn-add">Add Location</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Note Modal -->
+        <div id="noteModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add Note</h2>
+                <form action="{{ url_for('add_note') }}" method="POST">
+                    <div class="form-group">
+                        <label for="content">Content:</label>
+                        <textarea id="content" name="content" required></textarea>
+                    </div>
+                    <button type="submit" class="dashboard-btn dashboard-btn-add">Add Note</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Volunteer Modal -->
+        <div id="volunteerModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add Volunteer</h2>
+                <form action="{{ url_for('add_volunteer') }}" method="POST">
+                    <div class="form-group">
+                        <label for="name">Name:</label>
+                        <input type="text" id="name" name="name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">Email:</label>
+                        <input type="email" id="email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="phone">Phone:</label>
+                        <input type="tel" id="phone" name="phone">
+                    </div>
+                    <div class="form-group">
+                        <label for="availability">Availability:</label>
+                        <input type="text" id="availability" name="availability">
+                    </div>
+                    <div class="form-group">
+                        <label for="skills">Skills:</label>
+                        <input type="text" id="skills" name="skills">
+                    </div>
+                    <div class="form-group">
+                        <label for="notes">Notes:</label>
+                        <textarea id="notes" name="notes"></textarea>
+                    </div>
+                    <button type="submit" class="dashboard-btn dashboard-btn-add">Add Volunteer</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Budget Modal -->
+        <div id="budgetModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add Budget Entry</h2>
+                <form action="{{ url_for('add_budget') }}" method="POST">
+                    <div class="form-group">
+                        <label for="amount">Amount:</label>
+                        <input type="number" id="amount" name="amount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="description">Description:</label>
+                        <input type="text" id="description" name="description" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="date">Date:</label>
+                        <input type="date" id="date" name="date" required>
+                    </div>
+                    <button type="submit" class="dashboard-btn dashboard-btn-add">Add Entry</button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Donation Modal -->
+        <div id="donationModal" class="modal">
+            <div class="modal-content">
+                <span class="close">&times;</span>
+                <h2>Add Donation</h2>
+                <form action="{{ url_for('add_donation') }}" method="POST">
+                    <div class="form-group">
+                        <label for="amount">Amount:</label>
+                        <input type="number" id="amount" name="amount" step="0.01" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="donor_name">Donor Name:</label>
+                        <input type="text" id="donor_name" name="donor_name">
+                    </div>
+                    <button type="submit" class="dashboard-btn dashboard-btn-add">Add Donation</button>
+                </form>
+            </div>
+        </div>
+    </main>
 </body>
 </html>

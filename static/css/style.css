@@ -5,6 +5,7 @@
   --text-color: #333;
   --light-gray: #e0e0e0;
   --white: #ffffff;
+  --sidebar-width: 250px;
 }
 
 body {
@@ -14,7 +15,7 @@ body {
   background-color: var(--background-color);
   margin: 0;
   padding: 0;
-} 
+}
 
 .container {
   width: 90%;
@@ -143,81 +144,254 @@ footer {
   }
 }
 
-.food-stock {
-    margin-bottom: 2rem;
+/* New Dashboard Styles */
+.dashboard-body {
+  display: flex;
+  background-color: #f0f2f5;
 }
 
-.table-container {
-    max-height: 400px;
-    overflow-y: auto;
-    border: 1px solid #ccc;
+.sidebar {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background-color: var(--primary-color);
+  color: white;
+  position: fixed;
+  left: 0;
+  top: 0;
+  overflow-y: auto;
+  z-index: 1000;
 }
 
-.inventory-table {
-    width: 100%;
-    border-collapse: collapse;
-    font-size: 14px;
+.sidebar-header {
+  padding: 20px;
+  text-align: center;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.inventory-table thead {
-    position: sticky;
-    top: 0;
-    background-color: #f8f9fa;
-    z-index: 1;
+.sidebar-menu {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }
 
-.inventory-table th,
-.inventory-table td {
-    padding: 8px;
-    text-align: left;
-    border: 1px solid #ddd;
+.sidebar-menu li a {
+  display: block;
+  padding: 15px 20px;
+  color: white;
+  text-decoration: none;
+  transition: background-color 0.3s;
 }
 
-.inventory-table th {
-    background-color: #f2f2f2;
-    font-weight: bold;
+.sidebar-menu li a:hover {
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-.inventory-table tr:nth-child(even) {
-    background-color: #f8f9fa;
+.dashboard-content {
+  margin-left: var(--sidebar-width);
+  padding: 20px;
+  width: calc(100% - var(--sidebar-width));
 }
 
-.inventory-table tr:hover {
-    background-color: #e9ecef;
+.dashboard-top-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  background-color: white;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
+.dashboard-summary {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 30px;
+}
+
+.summary-card {
+  background-color: white;
+  border-radius: 8px;
+  padding: 20px;
+  text-align: center;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  flex: 1;
+  margin: 0 10px;
+}
+
+.summary-card i {
+  font-size: 2em;
+  color: var(--primary-color);
+  margin-bottom: 10px;
+}
+
+.dashboard-table-container {
+  overflow-x: auto;
+}
+
+.dashboard-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.dashboard-table th,
+.dashboard-table td {
+  padding: 12px;
+  text-align: left;
+  border-bottom: 1px solid #ddd;
+}
+
+.dashboard-table th {
+  background-color: #f8f9fa;
+  font-weight: bold;
+  color: var(--primary-color);
+}
+
+.dashboard-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 14px;
+  margin: 0 4px;
+  min-width: 40px;
+}
+
+.dashboard-btn i {
+  margin-right: 6px;
+}
+
+.dashboard-btn-add {
+  background-color: var(--secondary-color);
+  color: white;
+}
+
+.dashboard-btn-edit {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 6px 12px;
+}
+
+.dashboard-btn-delete {
+  background-color: #e74c3c;
+  color: white;
+  padding: 6px 12px;
+}
+
+.dashboard-btn:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+}
+
+.inline-form {
+  display: inline-block;
+  margin: 0 4px;
+}
+
+.item-list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px;
+  border-bottom: 1px solid #eee;
+}
+
+.item-list li span {
+  flex: 1;
+  margin-right: 10px;
+}
+
+.item-list li .inline-form {
+  flex-shrink: 0;
+}
+
+/* Existing styles for modals, etc. */
 .modal {
     display: none;
     position: fixed;
-    z-index: 1;
+    z-index: 1000;
     left: 0;
     top: 0;
     width: 100%;
     height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
+    background-color: rgba(0, 0, 0, 0.5);
+    overflow-y: auto; /* Add scrolling */
+    padding: 20px; /* Add padding around the modal */
 }
 
 .modal-content {
-    background-color: #fefefe;
-    margin: 15% auto;
+    background-color: #fff;
+    margin: 5% auto; /* Reduced from 15% to 5% */
     padding: 20px;
-    border: 1px solid #888;
-    width: 80%;
+    border-radius: 8px;
+    width: 90%;
     max-width: 500px;
+    position: relative;
+    max-height: 80vh; /* Maximum height of 80% of viewport height */
+    overflow-y: auto; /* Enable scrolling within the modal content */
 }
 
 .close {
-    color: #aaa;
-    float: right;
-    font-size: 28px;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    font-size: 24px;
     font-weight: bold;
     cursor: pointer;
+    color: #666;
+    z-index: 1;
 }
 
-.close:hover,
-.close:focus {
-    color: #000;
-    text-decoration: none;
-    cursor: pointer;
+.form-group {
+    margin-bottom: 15px;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+}
+
+.form-group input,
+.form-group textarea {
+    width: 100%;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box; /* Ensure padding doesn't affect width */
+}
+
+.form-group textarea {
+    height: 100px;
+    resize: vertical;
+}
+
+/* Style for the submit button at the bottom */
+.modal-content form button[type="submit"] {
+    margin-top: 20px;
+    margin-bottom: 10px;
+    width: 100%;
+    padding: 10px;
+}
+
+/* Ensure the close button doesn't overlap with content */
+.close:hover {
+    color: #555;
+}
+
+/* Add some spacing at the bottom of the form */
+.modal-content form {
+    padding-bottom: 20px;
+}
+
+/* Make sure modal is centered on mobile */
+@media (max-width: 768px) {
+    .modal-content {
+        width: 95%;
+        margin: 10px auto;
+    }
 }
