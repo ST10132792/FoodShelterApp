@@ -21,53 +21,61 @@
     </header>
 
     <main class="container">
-        <section class="dashboard-section">
+        <section class="dashboard-section food-stock">
             <h2>Food Stock</h2>
             <div class="inventory-summary">
                 <p><a href="{{ url_for('low_stock') }}">Low Stock Items: {{ low_stock_count }}</a></p>
                 <p><a href="{{ url_for('expiring_soon') }}">Items Expiring Soon: {{ expiring_soon_count }}</a></p>
             </div>
-            <table class="inventory-table">
-                <thead>
-                    <tr>
-                        <th>Item Name</th>
-                        <th>Category</th>
-                        <th>Quantity</th>
-                        <th>Unit</th>
-                        <th>Expiration Date</th>
-                        <th>Minimum Stock</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for item in food_stock %}
-                    <tr data-item-id="{{ item.id }}">
-                        <td data-field="item_name">{{ item.item_name }}</td>
-                        <td data-field="category">{{ item.category }}</td>
-                        <td data-field="quantity">{{ item.quantity }}</td>
-                        <td data-field="unit">{{ item.unit }}</td>
-                        <td data-field="expiration_date" class="date-cell">{{ item.expiration_date.strftime('%Y-%m-%d') if item.expiration_date else 'N/A' }}</td>
-                        <td data-field="minimum_stock">{{ item.minimum_stock }}</td>
-                        <td>
-                            <button class="btn btn-edit" data-item-id="{{ item.id }}">Edit</button>
-                            <form action="{{ url_for('delete_food_stock', item_id=item.id) }}" method="POST" class="inline-form">
-                                <button type="submit" class="btn btn-delete">Delete</button>
-                            </form>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
-            <form action="{{ url_for('add_food_stock') }}" method="post" class="add-form">
-                <h3>Add Food Stock</h3>
-                <input type="text" name="item_name" placeholder="Item Name" required>
-                <input type="text" name="category" placeholder="Category" required>
-                <input type="number" name="quantity" placeholder="Quantity" required>
-                <input type="text" name="unit" placeholder="Unit" required>
-                <input type="date" name="expiration_date" placeholder="Expiration Date">
-                <input type="number" name="minimum_stock" placeholder="Minimum Stock" required>
-                <button type="submit" class="btn btn-add">Add Item</button>
-            </form>
+            <div class="table-container">
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Item Name</th>
+                            <th>Category</th>
+                            <th>Quantity</th>
+                            <th>Unit</th>
+                            <th>Expiration Date</th>
+                            <th>Minimum Stock</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for item in food_stock %}
+                        <tr data-item-id="{{ item.id }}">
+                            <td data-field="item_name">{{ item.item_name }}</td>
+                            <td data-field="category">{{ item.category }}</td>
+                            <td data-field="quantity">{{ item.quantity }}</td>
+                            <td data-field="unit">{{ item.unit }}</td>
+                            <td data-field="expiration_date" class="date-cell">{{ item.expiration_date.strftime('%Y-%m-%d') if item.expiration_date else 'N/A' }}</td>
+                            <td data-field="minimum_stock">{{ item.minimum_stock }}</td>
+                            <td>
+                                <button class="btn btn-edit" data-item-id="{{ item.id }}">Edit</button>
+                                <form action="{{ url_for('delete_food_stock', item_id=item.id) }}" method="POST" class="inline-form">
+                                    <button type="submit" class="btn btn-delete">Delete</button>
+                                </form>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <button id="addFoodStockBtn" class="btn btn-add">Add Food Stock</button>
+            <div id="addFoodStockForm" class="modal">
+                <div class="modal-content">
+                    <span class="close">&times;</span>
+                    <h3>Add Food Stock</h3>
+                    <form action="{{ url_for('add_food_stock') }}" method="post">
+                        <input type="text" name="item_name" placeholder="Item Name" required>
+                        <input type="text" name="category" placeholder="Category" required>
+                        <input type="number" name="quantity" placeholder="Quantity" required>
+                        <input type="text" name="unit" placeholder="Unit" required>
+                        <input type="date" name="expiration_date" placeholder="Expiration Date">
+                        <input type="number" name="minimum_stock" placeholder="Minimum Stock" required>
+                        <button type="submit" class="btn btn-add">Add Item</button>
+                    </form>
+                </div>
+            </div>
         </section>
 
         <section class="dashboard-section">

@@ -8,6 +8,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
         });
     }
+
+    const addBtn = document.getElementById('addFoodStockBtn');
+    const modal = document.getElementById('addFoodStockForm');
+    const closeBtn = modal.querySelector('.close');
+
+    addBtn.onclick = function() {
+        modal.style.display = 'block';
+    }
+
+    closeBtn.onclick = function() {
+        modal.style.display = 'none';
+    }
+
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = 'none';
+        }
+    }
 });
 
 function editItem(itemId) {

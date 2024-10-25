@@ -1010,3 +1010,70 @@ nominatim@openstreetmap.org to have this block lifted.</p>
 2024-10-21 22:46:52,575 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:52] "GET /dashboard?__debugger__=yes&cmd=resource&f=console.png&s=wpahsAUQyohH0HCKQzNm HTTP/1.1" 200 -
 2024-10-21 22:46:52,579 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:52] "[36mGET /dashboard?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
 2024-10-21 22:46:52,623 - INFO - 127.0.0.1 - - [21/Oct/2024 22:46:52] "[36mGET /dashboard?__debugger__=yes&cmd=resource&f=console.png HTTP/1.1[0m" 304 -
+2024-10-23 16:09:53,652 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-10-23 16:09:53,652 - INFO - [33mPress CTRL+C to quit[0m
+2024-10-23 16:09:53,655 - INFO -  * Restarting with stat
+2024-10-23 16:09:54,902 - WARNING -  * Debugger is active!
+2024-10-23 16:09:54,908 - INFO -  * Debugger PIN: 951-135-049
+2024-10-23 16:09:58,507 - INFO - 127.0.0.1 - - [23/Oct/2024 16:09:58] "GET / HTTP/1.1" 200 -
+2024-10-23 16:09:58,551 - INFO - 127.0.0.1 - - [23/Oct/2024 16:09:58] "[33mGET /static/images/food-icon.png HTTP/1.1[0m" 404 -
+2024-10-23 16:09:58,552 - INFO - 127.0.0.1 - - [23/Oct/2024 16:09:58] "[33mGET /static/images/shelter-icon.png HTTP/1.1[0m" 404 -
+2024-10-23 16:09:58,643 - INFO - 127.0.0.1 - - [23/Oct/2024 16:09:58] "[33mGET /static/images/volunteer-icon.png HTTP/1.1[0m" 404 -
+2024-10-23 16:09:58,699 - INFO - 127.0.0.1 - - [23/Oct/2024 16:09:58] "GET /static/css/style.css HTTP/1.1" 200 -
+2024-10-23 16:09:58,947 - INFO - 127.0.0.1 - - [23/Oct/2024 16:09:58] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2024-10-23 16:10:00,689 - DEBUG - Login route accessed
+2024-10-23 16:10:00,692 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:00] "GET /login HTTP/1.1" 200 -
+2024-10-23 16:10:00,712 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:10:02,251 - DEBUG - Login route accessed
+2024-10-23 16:10:02,272 - DEBUG - Login attempt with email: bencamrush@gmail.com
+2024-10-23 16:10:02,274 - DEBUG - User found: bencamrush@gmail.com
+2024-10-23 16:10:02,406 - DEBUG - Password check successful
+2024-10-23 16:10:02,406 - DEBUG - User logged in successfully
+2024-10-23 16:10:02,407 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:02] "[32mPOST /login HTTP/1.1[0m" 302 -
+2024-10-23 16:10:02,435 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:02] "GET /dashboard HTTP/1.1" 200 -
+2024-10-23 16:10:02,459 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:02] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:10:02,468 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:02] "GET /static/js/inventory.js HTTP/1.1" 200 -
+2024-10-23 16:10:21,669 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:21] "POST /update_food_stock/2 HTTP/1.1" 200 -
+2024-10-23 16:10:21,686 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:21] "GET /dashboard HTTP/1.1" 200 -
+2024-10-23 16:10:21,709 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:21] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:10:21,711 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:21] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-23 16:10:46,441 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:46] "GET /expiring_soon HTTP/1.1" 200 -
+2024-10-23 16:10:46,464 - INFO - 127.0.0.1 - - [23/Oct/2024 16:10:46] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:11:00,125 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:00] "GET / HTTP/1.1" 200 -
+2024-10-23 16:11:00,153 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:00] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:11:00,160 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:00] "[33mGET /static/images/food-icon.png HTTP/1.1[0m" 404 -
+2024-10-23 16:11:00,161 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:00] "[33mGET /static/images/shelter-icon.png HTTP/1.1[0m" 404 -
+2024-10-23 16:11:00,180 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:00] "[33mGET /static/images/volunteer-icon.png HTTP/1.1[0m" 404 -
+2024-10-23 16:11:07,446 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:07] "GET /dashboard HTTP/1.1" 200 -
+2024-10-23 16:11:07,468 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:07] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:11:07,481 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:07] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-23 16:11:28,480 - DEBUG - Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2024-10-23 16:11:28,481 - DEBUG - Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2024-10-23 16:11:28,481 - DEBUG - Nominatim.geocode: https://nominatim.openstreetmap.org/search?q=4+Aster+Street%2C+Newlands&format=json&limit=1
+2024-10-23 16:11:28,481 - DEBUG - Starting new HTTPS connection (1): nominatim.openstreetmap.org:443
+2024-10-23 16:11:29,382 - DEBUG - https://nominatim.openstreetmap.org:443 "GET /search?q=4+Aster+Street%2C+Newlands&format=json&limit=1 HTTP/11" 200 482
+2024-10-23 16:11:29,428 - INFO - Added new shelter location: 1
+2024-10-23 16:11:29,429 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:29] "[32mPOST /add_shelter_location HTTP/1.1[0m" 302 -
+2024-10-23 16:11:29,438 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:29] "GET /dashboard HTTP/1.1" 200 -
+2024-10-23 16:11:29,462 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:29] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:11:29,466 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:29] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-23 16:11:33,163 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:33] "GET / HTTP/1.1" 200 -
+2024-10-23 16:11:33,188 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:33] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:11:33,198 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:33] "[33mGET /static/images/food-icon.png HTTP/1.1[0m" 404 -
+2024-10-23 16:11:33,199 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:33] "[33mGET /static/images/shelter-icon.png HTTP/1.1[0m" 404 -
+2024-10-23 16:11:33,213 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:33] "[33mGET /static/images/volunteer-icon.png HTTP/1.1[0m" 404 -
+2024-10-23 16:11:47,988 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:47] "GET /dashboard HTTP/1.1" 200 -
+2024-10-23 16:11:48,012 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:48] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:11:48,019 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:48] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-23 16:11:48,926 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:48] "GET /update_profile HTTP/1.1" 200 -
+2024-10-23 16:11:48,950 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:48] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:11:54,046 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:54] "[32mPOST /update_profile HTTP/1.1[0m" 302 -
+2024-10-23 16:11:54,055 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:54] "GET /dashboard HTTP/1.1" 200 -
+2024-10-23 16:11:54,077 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:54] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:11:54,085 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:54] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-23 16:11:56,957 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:56] "GET / HTTP/1.1" 200 -
+2024-10-23 16:11:56,979 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:56] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-23 16:11:56,985 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:56] "[33mGET /static/images/food-icon.png HTTP/1.1[0m" 404 -
+2024-10-23 16:11:56,989 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:56] "[33mGET /static/images/shelter-icon.png HTTP/1.1[0m" 404 -
+2024-10-23 16:11:57,007 - INFO - 127.0.0.1 - - [23/Oct/2024 16:11:57] "[33mGET /static/images/volunteer-icon.png HTTP/1.1[0m" 404 -
