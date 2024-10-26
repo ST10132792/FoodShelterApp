@@ -188,6 +188,8 @@ def dashboard():
         FoodStock.expiration_date <= datetime.now().date() + timedelta(days=7)
     ).count()
     
+    total_donations = sum(donation.amount for donation in donations)
+    
     return render_template('dashboard.html', 
                            food_stock=food_stock, 
                            shelter_locations=shelter_locations, 
@@ -196,7 +198,8 @@ def dashboard():
                            volunteers=volunteers, 
                            donations=donations,
                            low_stock_count=low_stock_count,
-                           expiring_soon_count=expiring_soon_count)
+                           expiring_soon_count=expiring_soon_count,
+                           total_donations="{:.2f}".format(total_donations))
 
 
 

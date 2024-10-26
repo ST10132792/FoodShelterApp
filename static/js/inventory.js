@@ -1,9 +1,13 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const table = document.querySelector('.inventory-table');
+    const table = document.querySelector('.dashboard-table');
     if (table) {
         table.addEventListener('click', function(e) {
-            if (e.target.classList.contains('btn-edit')) {
-                const itemId = e.target.getAttribute('data-item-id');
+            if (e.target.classList.contains('dashboard-btn-edit') || 
+                e.target.parentElement.classList.contains('dashboard-btn-edit')) {
+                const button = e.target.classList.contains('dashboard-btn-edit') ? 
+                             e.target : 
+                             e.target.parentElement;
+                const itemId = button.getAttribute('data-item-id');
                 editItem(itemId);
             }
         });
@@ -44,13 +48,13 @@ function editItem(itemId) {
     });
 
     const saveButton = document.createElement('button');
-    saveButton.textContent = 'Save';
-    saveButton.classList.add('btn', 'btn-save');
+    saveButton.innerHTML = '<i class="fas fa-save"></i> Save';
+    saveButton.classList.add('dashboard-btn', 'dashboard-btn-edit');
     saveButton.onclick = () => saveItem(itemId);
 
     const cancelButton = document.createElement('button');
-    cancelButton.textContent = 'Cancel';
-    cancelButton.classList.add('btn', 'btn-cancel');
+    cancelButton.innerHTML = '<i class="fas fa-times"></i> Cancel';
+    cancelButton.classList.add('dashboard-btn', 'dashboard-btn-delete');
     cancelButton.onclick = () => cancelEdit(itemId);
 
     const actionsCell = cells[cells.length - 1];
