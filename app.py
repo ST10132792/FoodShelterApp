@@ -99,6 +99,21 @@ class Donation(db.Model):
     date = db.Column(db.DateTime, default=datetime.utcnow)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+class MealPlan(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    name = db.Column(db.String(100), nullable=False)
+    servings = db.Column(db.Integer, nullable=False)
+    is_prepared = db.Column(db.Boolean, default=False)
+    created_at = db.Column(db.DateTime, default=datetime.utcnow)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    ingredients = db.relationship('MealIngredient', backref='meal', lazy=True)
+
+class MealIngredient(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    meal_id = db.Column(db.Integer, db.ForeignKey('meal_plan.id'), nullable=False)
+    food_stock_id = db.Column(db.Integer, db.ForeignKey('food_stock.id'), nullable=False)
+    quantity_per_serving = db.Column(db.Float, nullable=False)
+    food_stock = db.relationship('FoodStock', backref='meal_ingredients', lazy=True)
 
 
 @login_manager.user_loader
@@ -491,6 +506,67 @@ def delete_donation(donation_id):
     db.session.commit()
     flash('Donation deleted successfully.')
     return redirect(url_for('dashboard'))
+
+@app.route('/meal_prep')
+@login_required
+def meal_prep():
+    food_stock = FoodStock.query.filter_by(user_id=current_user.id).all()
+    planned_meals = MealPlan.query.filter_by(
+        user_id=current_user.id, 
+        is_prepared=False
+    ).order_by(MealPlan.created_at.desc()).all()
+    return render_template('meal_prep.html', food_stock=food_stock, planned_meals=planned_meals)
+
+@app.route('/add_meal_plan', methods=['POST'])
+@login_required
+def add_meal_plan():
+    name = request.form.get('meal_name')
+    servings = int(request.form.get('servings'))
+    ingredients = request.form.getlist('ingredient_id[]')
+    quantities = request.form.getlist('quantity[]')
+    
+    meal = MealPlan(name=name, servings=servings, user_id=current_user.id)
+    db.session.add(meal)
+    db.session.flush()  # This will assign an ID to the meal without committing
+    
+    for i in range(len(ingredients)):
+        ingredient = MealIngredient(
+            meal_id=meal.id,  # Now meal.id will have a value
+            food_stock_id=int(ingredients[i]),
+            quantity_per_serving=float(quantities[i])
+        )
+        db.session.add(ingredient)
+    
+    try:
+        db.session.commit()
+        flash('Meal plan added successfully!')
+    except Exception as e:
+        db.session.rollback()
+        flash(f'Error adding meal plan: {str(e)}')
+    
+    return redirect(url_for('meal_prep'))
+
+@app.route('/prepare_meal/<int:meal_id>', methods=['POST'])
+@login_required
+def prepare_meal(meal_id):
+    meal = MealPlan.query.get_or_404(meal_id)
+    if meal.user_id != current_user.id:
+        abort(403)
+    
+    for ingredient in meal.ingredients:
+        food_item = FoodStock.query.get(ingredient.food_stock_id)
+        total_needed = ingredient.quantity_per_serving * meal.servings
+        
+        if food_item.quantity < total_needed:
+            flash(f'Not enough {food_item.item_name} available!')
+            return redirect(url_for('meal_prep'))
+        
+        food_item.quantity -= total_needed
+    
+    meal.is_prepared = True
+    db.session.commit()
+    flash('Meal prepared successfully!')
+    return redirect(url_for('meal_prep'))
 
 if __name__ == '__main__':
     with app.app_context():
