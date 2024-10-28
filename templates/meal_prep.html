@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meal Prep - Food Shelter App</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1>Meal Prep</h1>
+            <nav>
+                <a href="{{ url_for('dashboard') }}" class="nav-link">Back to Dashboard</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        <div class="meal-prep-container">
+            <div class="planned-meals">
+                <h2>Planned Meals</h2>
+                {% for meal in planned_meals %}
+                <div class="meal-card">
+                    <div class="meal-header">
+                        <h3>{{ meal.name }}</h3>
+                        <span>{{ meal.servings }} servings</span>
+                    </div>
+                    <div class="meal-ingredients">
+                        {% for ingredient in meal.ingredients %}
+                        <p>{{ ingredient.food_stock.item_name }}: 
+                           {{ ingredient.quantity_per_serving }} {{ ingredient.food_stock.unit }}/serving</p>
+                        {% endfor %}
+                    </div>
+                    <form action="{{ url_for('prepare_meal', meal_id=meal.id) }}" method="POST">
+                        <button type="submit" class="dashboard-btn dashboard-btn-add">
+                            <i class="fas fa-utensils"></i> Prepare Meal
+                        </button>
+                    </form>
+                </div>
+                {% endfor %}
+            </div>
+
+            <div class="add-meal-form">
+                <h2>Plan New Meal</h2>
+                <form action="{{ url_for('add_meal_plan') }}" method="POST" id="mealPlanForm">
+                    <div class="form-group">
+                        <label for="meal_name">Meal Name:</label>
+                        <input type="text" id="meal_name" name="meal_name" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="servings">Number of Servings:</label>
+                        <input type="number" id="servings" name="servings" min="1" required>
+                    </div>
+                    <div id="ingredients-container">
+                        <h3>Ingredients</h3>
+                        <div class="ingredient-row">
+                            <select name="ingredient_id[]" required>
+                                {% for item in food_stock %}
+                                <option value="{{ item.id }}">
+                                    {{ item.item_name }} ({{ item.quantity }} {{ item.unit }} available)
+                                </option>
+                                {% endfor %}
+                            </select>
+                            <input type="number" name="quantity[]" step="0.1" min="0" 
+                                   placeholder="Quantity per serving" required>
+                        </div>
+                    </div>
+                    <button type="button" id="addIngredient" class="dashboard-btn">
+                        <i class="fas fa-plus"></i> Add Another Ingredient
+                    </button>
+                    <button type="submit" class="dashboard-btn dashboard-btn-add">
+                        <i class="fas fa-save"></i> Save Meal Plan
+                    </button>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2023 Food Shelter App. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script>
+        document.getElementById('addIngredient').addEventListener('click', function() {
+            const container = document.getElementById('ingredients-container');
+            const newRow = document.createElement('div');
+            newRow.className = 'ingredient-row';
+            newRow.innerHTML = `
+                <select name="ingredient_id[]" required>
+                    {% for item in food_stock %}
+                    <option value="{{ item.id }}">
+                        {{ item.item_name }} ({{ item.quantity }} {{ item.unit }} available)
+                    </option>
+                    {% endfor %}
+                </select>
+                <input type="number" name="quantity[]" step="0.1" min="0" 
+                       placeholder="Quantity per serving" required>
+            `;
+            container.appendChild(newRow);
+        });
+    </script>
+</body>
+</html>
