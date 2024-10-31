@@ -19,10 +19,12 @@ from flask_mail import Mail, Message
 from dotenv import load_dotenv
 load_dotenv()
 
+# Configure application logging to app.log file
 logging.basicConfig(filename='app.log', 
                     level=logging.DEBUG, 
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
+# Initialize core Flask application and database
 app = Flask(__name__)
 app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
@@ -30,6 +32,7 @@ db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 
+# Configure email settings for password reset functionality
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
@@ -39,6 +42,8 @@ mail = Mail(app)
 
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
 
+# Database Models
+# User model for shelter administrators - handles auth and profile info
 class User(UserMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     email = db.Column(db.String(120), unique=True, nullable=False)
@@ -54,7 +59,7 @@ class User(UserMixin, db.Model):
     role = db.Column(db.String(20), nullable=False, default='user')
     donation_link = db.Column(db.String(200), nullable=True)
 
-
+# Food inventory tracking including quantities and expiration dates
 class FoodStock(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     item_name = db.Column(db.String(100), nullable=False)
@@ -65,6 +70,7 @@ class FoodStock(db.Model):
     unit = db.Column(db.String(20), nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
 
+# Shelter location storage with geocoding support
 class ShelterLocation(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     address = db.Column(db.String(200), nullable=False)
@@ -124,6 +130,7 @@ class MealIngredient(db.Model):
 def load_user(user_id):
     return db.session.get(User, int(user_id))
 
+# Public homepage showing all shelter information
 @app.route('/')
 def home():
     users = User.query.all()
@@ -140,7 +147,7 @@ def home():
         })
     return render_template('home.html', shelter_info=shelter_info)
 
-
+# Authentication route handlers
 @app.route('/login', methods=['GET', 'POST'])
 def login():
     logging.debug("Login route accessed")
@@ -185,7 +192,7 @@ def update_profile():
         return redirect(url_for('dashboard'))
     return render_template('update_profile.html')
 
-
+# Main dashboard showing inventory, locations, notes, budget, volunteers and donations
 @app.route('/dashboard')
 @login_required
 def dashboard():
@@ -220,10 +227,7 @@ def dashboard():
                            expiring_soon_count=expiring_soon_count,
                            total_donations="R{:.2f}".format(total_donations))
 
-
-
-
-
+# Food inventory management routes
 @app.route('/add_food_stock', methods=['POST'])
 @login_required
 def add_food_stock():
@@ -511,6 +515,7 @@ def delete_donation(donation_id):
     flash('Donation deleted successfully.')
     return redirect(url_for('dashboard'))
 
+# Meal planning and preparation interface
 @app.route('/meal_prep')
 @login_required
 def meal_prep():
@@ -572,6 +577,7 @@ def prepare_meal(meal_id):
     flash('Meal prepared successfully!')
     return redirect(url_for('meal_prep'))
 
+# Application startup
 if __name__ == '__main__':
     with app.app_context():
         db.create_all()

@@ -755,3 +755,88 @@
 2024-10-31 20:41:07,732 - INFO - 127.0.0.1 - - [31/Oct/2024 20:41:07] "[36mGET /static/js/modals.js HTTP/1.1[0m" 304 -
 2024-10-31 20:41:07,733 - INFO - 127.0.0.1 - - [31/Oct/2024 20:41:07] "[36mGET /static/js/sections.js HTTP/1.1[0m" 304 -
 2024-10-31 20:41:07,733 - INFO - 127.0.0.1 - - [31/Oct/2024 20:41:07] "[36mGET /static/js/sidebar.js HTTP/1.1[0m" 304 -
+2024-10-31 21:29:28,350 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-10-31 21:29:28,351 - INFO - [33mPress CTRL+C to quit[0m
+2024-10-31 21:29:28,352 - INFO -  * Restarting with stat
+2024-10-31 21:29:29,575 - WARNING -  * Debugger is active!
+2024-10-31 21:29:29,583 - INFO -  * Debugger PIN: 951-135-049
+2024-10-31 21:29:32,411 - INFO - 127.0.0.1 - - [31/Oct/2024 21:29:32] "GET / HTTP/1.1" 200 -
+2024-10-31 21:29:32,575 - INFO - 127.0.0.1 - - [31/Oct/2024 21:29:32] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:29:36,301 - INFO - 127.0.0.1 - - [31/Oct/2024 21:29:36] "GET /dashboard HTTP/1.1" 200 -
+2024-10-31 21:29:36,322 - INFO - 127.0.0.1 - - [31/Oct/2024 21:29:36] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:29:36,360 - INFO - 127.0.0.1 - - [31/Oct/2024 21:29:36] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-31 21:29:36,365 - INFO - 127.0.0.1 - - [31/Oct/2024 21:29:36] "[36mGET /static/js/modals.js HTTP/1.1[0m" 304 -
+2024-10-31 21:29:36,369 - INFO - 127.0.0.1 - - [31/Oct/2024 21:29:36] "[36mGET /static/js/sections.js HTTP/1.1[0m" 304 -
+2024-10-31 21:29:36,374 - INFO - 127.0.0.1 - - [31/Oct/2024 21:29:36] "[36mGET /static/js/sidebar.js HTTP/1.1[0m" 304 -
+2024-10-31 21:29:37,531 - INFO - 127.0.0.1 - - [31/Oct/2024 21:29:37] "GET /update_profile HTTP/1.1" 200 -
+2024-10-31 21:29:37,558 - INFO - 127.0.0.1 - - [31/Oct/2024 21:29:37] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:30:18,923 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:18] "[32mPOST /update_profile HTTP/1.1[0m" 302 -
+2024-10-31 21:30:18,937 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:18] "GET /dashboard HTTP/1.1" 200 -
+2024-10-31 21:30:18,960 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:18] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:30:18,978 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:18] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:18,987 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:18] "[36mGET /static/js/modals.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:18,990 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:18] "[36mGET /static/js/sidebar.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:18,992 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:18] "[36mGET /static/js/sections.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:20,625 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:20] "GET / HTTP/1.1" 200 -
+2024-10-31 21:30:20,646 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:20] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:30:46,587 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:46] "GET /dashboard HTTP/1.1" 200 -
+2024-10-31 21:30:46,611 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:46] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:30:46,649 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:46] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:46,654 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:46] "[36mGET /static/js/modals.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:46,657 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:46] "[36mGET /static/js/sections.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:46,658 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:46] "[36mGET /static/js/sidebar.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:48,953 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:48] "[32mPOST /delete_shelter_location/1 HTTP/1.1[0m" 302 -
+2024-10-31 21:30:48,964 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:48] "GET /dashboard HTTP/1.1" 200 -
+2024-10-31 21:30:48,991 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:48] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:30:49,017 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:49] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:49,027 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:49] "[36mGET /static/js/modals.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:49,028 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:49] "[36mGET /static/js/sections.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:49,030 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:49] "[36mGET /static/js/sidebar.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:55,089 - DEBUG - Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2024-10-31 21:30:55,089 - DEBUG - Converted retries value: 2 -> Retry(total=2, connect=None, read=None, redirect=None, status=None)
+2024-10-31 21:30:55,089 - DEBUG - Nominatim.geocode: https://nominatim.openstreetmap.org/search?q=4+Aster+Street%2C+Newlands&format=json&limit=1
+2024-10-31 21:30:55,090 - DEBUG - Starting new HTTPS connection (1): nominatim.openstreetmap.org:443
+2024-10-31 21:30:55,797 - DEBUG - https://nominatim.openstreetmap.org:443 "GET /search?q=4+Aster+Street%2C+Newlands&format=json&limit=1 HTTP/11" 200 482
+2024-10-31 21:30:55,844 - INFO - Added new shelter location: 1
+2024-10-31 21:30:55,845 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:55] "[32mPOST /add_shelter_location HTTP/1.1[0m" 302 -
+2024-10-31 21:30:55,855 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:55] "GET /dashboard HTTP/1.1" 200 -
+2024-10-31 21:30:55,879 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:55] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:30:55,906 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:55] "[36mGET /static/js/inventory.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:55,907 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:55] "[36mGET /static/js/modals.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:55,911 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:55] "[36mGET /static/js/sections.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:55,912 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:55] "[36mGET /static/js/sidebar.js HTTP/1.1[0m" 304 -
+2024-10-31 21:30:58,014 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:58] "GET / HTTP/1.1" 200 -
+2024-10-31 21:30:58,037 - INFO - 127.0.0.1 - - [31/Oct/2024 21:30:58] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:32:02,848 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-10-31 21:32:02,848 - INFO - [33mPress CTRL+C to quit[0m
+2024-10-31 21:32:02,850 - INFO -  * Restarting with stat
+2024-10-31 21:32:04,096 - WARNING -  * Debugger is active!
+2024-10-31 21:32:04,103 - INFO -  * Debugger PIN: 951-135-049
+2024-10-31 21:32:06,594 - INFO - 127.0.0.1 - - [31/Oct/2024 21:32:06] "GET / HTTP/1.1" 200 -
+2024-10-31 21:32:06,727 - INFO - 127.0.0.1 - - [31/Oct/2024 21:32:06] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:33:09,922 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-10-31 21:33:09,922 - INFO - [33mPress CTRL+C to quit[0m
+2024-10-31 21:33:09,925 - INFO -  * Restarting with stat
+2024-10-31 21:33:11,216 - WARNING -  * Debugger is active!
+2024-10-31 21:33:11,223 - INFO -  * Debugger PIN: 951-135-049
+2024-10-31 21:33:11,716 - INFO - 127.0.0.1 - - [31/Oct/2024 21:33:11] "GET / HTTP/1.1" 200 -
+2024-10-31 21:33:11,877 - INFO - 127.0.0.1 - - [31/Oct/2024 21:33:11] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:33:23,682 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-10-31 21:33:23,683 - INFO - [33mPress CTRL+C to quit[0m
+2024-10-31 21:33:23,685 - INFO -  * Restarting with stat
+2024-10-31 21:33:24,987 - WARNING -  * Debugger is active!
+2024-10-31 21:33:24,995 - INFO -  * Debugger PIN: 951-135-049
+2024-10-31 21:33:25,059 - INFO - 127.0.0.1 - - [31/Oct/2024 21:33:25] "GET / HTTP/1.1" 200 -
+2024-10-31 21:33:25,244 - INFO - 127.0.0.1 - - [31/Oct/2024 21:33:25] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
+2024-10-31 21:34:28,158 - INFO - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2024-10-31 21:34:28,158 - INFO - [33mPress CTRL+C to quit[0m
+2024-10-31 21:34:28,160 - INFO -  * Restarting with stat
+2024-10-31 21:34:29,437 - WARNING -  * Debugger is active!
+2024-10-31 21:34:29,444 - INFO -  * Debugger PIN: 951-135-049
+2024-10-31 21:34:30,821 - INFO - 127.0.0.1 - - [31/Oct/2024 21:34:30] "GET / HTTP/1.1" 200 -
+2024-10-31 21:34:30,981 - INFO - 127.0.0.1 - - [31/Oct/2024 21:34:30] "[36mGET /static/css/style.css HTTP/1.1[0m" 304 -
