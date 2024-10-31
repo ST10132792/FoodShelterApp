@@ -108,19 +108,25 @@
             attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
         }).addTo(map);
 
-        var shelters = JSON.parse('{{ shelter_info|tojson|safe }}');
+        var shelters = {{ shelter_info|tojson|safe }};
+        
+        var markers = [];
         shelters.forEach(function(shelter) {
             shelter.locations.forEach(function(loc) {
-                L.marker([loc.latitude, loc.longitude])
-                    .addTo(map)
-                    .bindPopup(shelter.name + '<br>' + loc.address);
+                if (loc.latitude && loc.longitude) {
+                    var marker = L.marker([loc.latitude, loc.longitude])
+                        .addTo(map)
+                        .bindPopup(
+                            '<strong>' + (shelter.name || 'Unnamed Shelter') + '</strong><br>' +
+                            loc.address
+                        );
+                    markers.push(marker);
+                }
             });
         });
 
-        if (shelters.length > 0 && shelters[0].locations.length > 0) {
-            var bounds = L.latLngBounds(shelters.flatMap(shelter =>
-                shelter.locations.map(loc => [loc.latitude, loc.longitude])
-            ));
+        if (markers.length > 0) {
+            var bounds = L.featureGroup(markers).getBounds();
             map.fitBounds(bounds);
         }
     </script>
