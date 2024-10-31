@@ -279,7 +279,7 @@
                 <div class="summary-icon">💰</div>
                 <div class="summary-info">
                     <h3>Total Donations</h3>
-                    <p class="summary-number">${{ total_donations }}</p>
+                    <p class="summary-number">{{ total_donations }}</p>
                 </div>
             </div>
             <div class="summary-card static">
@@ -448,7 +448,7 @@
                 <ul class="item-list">
                     {% for donation in donations %}
                     <li>
-                        <span>{{ donation.amount }} - {{ donation.donor_name }} ({{ donation.date.strftime('%Y-%m-%d') }})</span>
+                        <span>R{{ donation.amount }} - {{ donation.donor_name }} ({{ donation.date.strftime('%Y-%m-%d') }})</span>
                         <form action="{{ url_for('delete_donation', donation_id=donation.id) }}" method="POST" class="inline-form">
                             <button type="submit" class="dashboard-btn dashboard-btn-delete"><i class="fas fa-trash"></i></button>
                         </form>
@@ -570,8 +570,8 @@
                 <h2>Add Budget Entry</h2>
                 <form action="{{ url_for('add_budget') }}" method="POST">
                     <div class="form-group">
-                        <label for="amount">Amount:</label>
-                        <input type="number" id="amount" name="amount" step="0.01" required>
+                        <label for="amount">Amount (R):</label>
+                        <input type="number" id="amount" name="amount" step="0.01" required placeholder="R0.00">
                     </div>
                     <div class="form-group">
                         <label for="description">Description:</label>
@@ -593,8 +593,8 @@
                 <h2>Add Donation</h2>
                 <form action="{{ url_for('add_donation') }}" method="POST">
                     <div class="form-group">
-                        <label for="amount">Amount:</label>
-                        <input type="number" id="amount" name="amount" step="0.01" required>
+                        <label for="amount">Amount (R):</label>
+                        <input type="number" id="amount" name="amount" step="0.01" required placeholder="R0.00">
                     </div>
                     <div class="form-group">
                         <label for="donor_name">Donor Name:</label>
