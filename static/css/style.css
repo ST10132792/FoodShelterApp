@@ -584,3 +584,229 @@ footer {
 #addIngredient {
     margin: 10px 0;
 }
+
+/* Add these media queries at the end of your style.css file */
+@media (max-width: 768px) {
+    /* Sidebar adjustments */
+    .sidebar {
+        position: fixed;
+        transform: translateX(-100%);
+        z-index: 1000;
+        width: 80%;
+        transition: transform 0.3s ease;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    /* Dashboard content adjustments */
+    .dashboard-content {
+        margin-left: 0;
+        padding: 10px;
+        width: 100%;
+    }
+
+    /* Ensure content starts from the left */
+    .container {
+        padding-left: 10px;
+        padding-right: 10px;
+        margin-left: 0;
+        width: 100%;
+    }
+
+    /* Summary cards */
+    .dashboard-summary {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    /* Table adjustments */
+    .table-container {
+        overflow-x: auto;
+    }
+
+    .dashboard-table {
+        min-width: 600px;
+    }
+
+    /* Action buttons */
+    .action-buttons {
+        flex-direction: column;
+        gap: 5px;
+    }
+
+    .dashboard-btn {
+        width: 100%;
+        margin: 2px 0;
+    }
+
+    /* Volunteer cards */
+    .volunteer-list {
+        grid-template-columns: 1fr;
+    }
+
+    /* Modal adjustments */
+    .modal-content {
+        width: 95%;
+        margin: 20px auto;
+        padding: 15px;
+    }
+
+    /* Form adjustments */
+    .form-group {
+        margin-bottom: 15px;
+    }
+
+    input, select, textarea {
+        width: 100%;
+        padding: 10px;
+    }
+
+    /* Top bar adjustments */
+    .dashboard-top-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 10px;
+        padding: 10px;
+    }
+
+    .user-actions {
+        display: flex;
+        gap: 5px;
+    }
+
+    /* Modify table display for mobile */
+    .dashboard-table {
+        min-width: auto;
+        width: 100%;
+    }
+
+    .dashboard-table, 
+    .dashboard-table thead, 
+    .dashboard-table tbody, 
+    .dashboard-table tr, 
+    .dashboard-table th, 
+    .dashboard-table td {
+        display: block;
+    }
+
+    .dashboard-table tr {
+        margin-bottom: 15px;
+        border: 1px solid #ddd;
+        border-radius: 8px;
+        padding: 10px;
+        background: white;
+    }
+
+    .dashboard-table td {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 8px 0;
+        border: none;
+    }
+
+    .dashboard-table td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        margin-right: 10px;
+    }
+
+    .dashboard-table thead {
+        display: none;
+    }
+
+    /* Food stock section adjustments */
+    .food-stock-grid {
+        grid-template-columns: 1fr;
+        gap: 15px;
+    }
+
+    .food-stock-item {
+        padding: 15px;
+    }
+}
+
+/* Tablet adjustments */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .dashboard-summary {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .volunteer-list {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+.table-container {
+    -webkit-overflow-scrolling: touch;
+    position: relative;
+}
+
+/* Add scroll indicator */
+.table-container::after {
+    content: '→';
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #666;
+    animation: bounce 1s infinite;
+    display: none;
+}
+
+@media (max-width: 768px) {
+    .table-container::after {
+        display: block;
+    }
+}
+
+@keyframes bounce {
+    0%, 100% { transform: translateX(0); }
+    50% { transform: translateX(5px); }
+}
+
+/* Update sidebar styles (around line 204) */
+.sidebar {
+    width: 250px;
+    background-color: var(--primary-color);
+    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
+    color: white;
+    padding: 20px 0;
+    transition: transform 0.3s ease-in-out;
+    z-index: 1000;
+}
+
+/* Desktop sidebar collapse */
+@media (min-width: 769px) {
+    .sidebar.collapsed {
+        transform: translateX(-220px);
+    }
+
+    .dashboard-content.expanded {
+        margin-left: 30px;
+        width: calc(100% - 30px);
+    }
+}
+
+/* Mobile sidebar collapse */
+@media (max-width: 768px) {
+    .sidebar {
+        transform: translateX(-100%);
+        width: 80%;
+    }
+
+    .sidebar.active {
+        transform: translateX(0);
+    }
+
+    .dashboard-content {
+        margin-left: 0;
+        width: 100%;
+    }
+}
+

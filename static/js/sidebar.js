@@ -1,35 +1,28 @@
 document.addEventListener('DOMContentLoaded', function() {
-    const sidebar = document.querySelector('.sidebar');
     const sidebarToggle = document.getElementById('sidebarToggle');
-    const dashboardContent = document.querySelector('.dashboard-content');
-    
-    // Restore sidebar state from localStorage
-    const sidebarCollapsed = localStorage.getItem('sidebarCollapsed') === 'true';
-    if (sidebarCollapsed) {
-        sidebar.classList.add('collapsed');
-        dashboardContent.classList.add('expanded');
-    }
+    const sidebar = document.querySelector('.sidebar');
+    const content = document.querySelector('.dashboard-content');
 
-    sidebarToggle.addEventListener('click', () => {
-        sidebar.classList.toggle('collapsed');
-        dashboardContent.classList.toggle('expanded');
-        
-        // Save sidebar state to localStorage
-        localStorage.setItem('sidebarCollapsed', sidebar.classList.contains('collapsed'));
-    });
-
-    // Show sidebar on hover when collapsed
-    sidebar.addEventListener('mouseenter', () => {
-        if (sidebar.classList.contains('collapsed')) {
-            sidebar.style.transform = 'translateX(0)';
+    sidebarToggle.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.toggle('active');
+        } else {
+            sidebar.classList.toggle('collapsed');
+            content.classList.toggle('expanded');
         }
     });
 
-    // Hide sidebar on mouse leave when collapsed
-    sidebar.addEventListener('mouseleave', () => {
-        if (sidebar.classList.contains('collapsed')) {
-            sidebar.style.transform = 'translateX(-220px)';
+    // Close sidebar when clicking outside on mobile
+    content.addEventListener('click', function() {
+        if (window.innerWidth <= 768) {
+            sidebar.classList.remove('active');
+        }
+    });
+
+    // Handle window resize
+    window.addEventListener('resize', function() {
+        if (window.innerWidth > 768) {
+            sidebar.classList.remove('active');
         }
     });
 });
-

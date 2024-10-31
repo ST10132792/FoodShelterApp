@@ -9,19 +9,23 @@ from datetime import timedelta
 #from time import sleep
 #from functools import lru_cache
 import logging
+import os
 
 from geopy.geocoders import Nominatim
 from geopy.exc import GeocoderTimedOut, GeocoderUnavailable
 from itsdangerous import URLSafeTimedSerializer
 from flask_mail import Mail, Message
 
+from dotenv import load_dotenv
+load_dotenv()
+
 logging.basicConfig(filename='app.log', 
                     level=logging.DEBUG, 
                     format='%(asctime)s - %(levelname)s - %(message)s')
 
 app = Flask(__name__)
-app.config['SECRET_KEY'] = 'your_secret_key'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///foodshelter.db'
+app.config['SECRET_KEY'] = os.getenv('FLASK_SECRET_KEY')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.getenv('DATABASE_URL')
 db = SQLAlchemy(app)
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
@@ -29,8 +33,8 @@ login_manager.login_view = 'login'
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
 app.config['MAIL_PORT'] = 587
 app.config['MAIL_USE_TLS'] = True
-app.config['MAIL_USERNAME'] = 'benfeb2003@gmail.com'
-app.config['MAIL_PASSWORD'] = 'yxao dexs ioeb chso'
+app.config['MAIL_USERNAME'] = os.getenv('MAIL_USERNAME')
+app.config['MAIL_PASSWORD'] = os.getenv('MAIL_PASSWORD')
 mail = Mail(app)
 
 s = URLSafeTimedSerializer(app.config['SECRET_KEY'])
@@ -214,7 +218,7 @@ def dashboard():
                            donations=donations,
                            low_stock_count=low_stock_count,
                            expiring_soon_count=expiring_soon_count,
-                           total_donations="{:.2f}".format(total_donations))
+                           total_donations="R{:.2f}".format(total_donations))
 
 
 
